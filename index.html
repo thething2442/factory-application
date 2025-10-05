@@ -1,13 +1,400 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>factory-application</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Plan: Standalone OS-Reading Microchip</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Cool Neutrals -->
+    <!-- Application Structure Plan: The application is designed as a single-page, vertical-scrolling site with a sticky top navigation for easy access to key sections. This linear, top-to-bottom flow is ideal for presenting a research plan, guiding the user logically from the high-level concept to the detailed execution plan. The structure includes: 1) Overview for initial context, 2) Core Technology for technical breakdown, 3) Interactive R&D Phases to explore the project timeline, 4) Dynamic KPIs for visualizing success metrics, and 5) Risk/Budget sections for project management details. This thematic sectioning makes the complex information digestible and allows stakeholders to quickly navigate to their area of interest, which is more effective than a rigid, chapter-like report structure. -->
+    <!-- Visualization & Content Choices: 
+        - Project Overview: Goal: Inform. Method: Text blocks with icons (HTML/Tailwind). Interaction: None. Justification: Provides a clear, static introduction to the project's purpose.
+        - Core Technology: Goal: Organize. Method: Three-column card layout (HTML/Tailwind Flexbox). Interaction: Click-to-reveal more details (JS). Justification: Breaks down complex tech into manageable, high-level concepts.
+        - R&D Phases: Goal: Show Process. Method: Interactive clickable cards (HTML/Tailwind). Interaction: Clicking a phase card reveals its detailed tasks and timeline (JS). Justification: Turns a static timeline into an engaging, user-controlled exploration of the project lifecycle.
+        - KPIs & Metrics: Goal: Compare/Inform. Method: Bar chart (Chart.js/Canvas). Interaction: Dropdown filter to change scenarios, which updates chart data (JS). Justification: Visualizes abstract performance targets, making them easier to understand and compare.
+        - Budget Allocation: Goal: Show Proportions. Method: Donut chart (Chart.js/Canvas). Interaction: Hover tooltips for details. Justification: Provides an immediate, intuitive understanding of how funds are distributed.
+        - All choices use Canvas-based charts or structured HTML, explicitly avoiding SVG and Mermaid JS as required. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F3F4F6;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .phase-card.active {
+            border-color: #3B82F6;
+            background-color: #EFF6FF;
+        }
+        .phase-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <span class="text-xl font-bold text-gray-900">ChipRead OS Project</span>
+            </div>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#overview" class="text-gray-600 hover:text-blue-600">Overview</a>
+                <a href="#technology" class="text-gray-600 hover:text-blue-600">Technology</a>
+                <a href="#phases" class="text-gray-600 hover:text-blue-600">Phases</a>
+                <a href="#kpis" class="text-gray-600 hover:text-blue-600">KPIs</a>
+                <a href="#management" class="text-gray-600 hover:text-blue-600">Management</a>
+            </div>
+            <div class="md:hidden">
+                <select id="mobile-nav" class="bg-gray-100 border border-gray-300 rounded-md p-2 text-sm">
+                    <option value="#overview">Overview</option>
+                    <option value="#technology">Technology</option>
+                    <option value="#phases">Phases</option>
+                    <option value="#kpis">KPIs</option>
+                    <option value="#management">Management</option>
+                </select>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+        
+        <section id="overview" class="mb-20 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Standalone OS-Reading Microchip</h1>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                A research initiative to develop a specialized, low-power microchip capable of directly interfacing with a system's storage to read its operating system state. The chip will provide a simple, standalone control window for diagnostics, forensics, and secure system recovery without booting the host OS.
+            </p>
+            <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="font-semibold text-lg mb-2">Primary Objective</h3>
+                    <p class="text-gray-600 text-sm">Create a proof-of-concept microchip that can read key OS files and display system status on a minimal interface.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="font-semibold text-lg mb-2">Target Application</h3>
+                    <p class="text-gray-600 text-sm">Embedded systems diagnostics, digital forensics data acquisition, and secure 'last-resort' system management tools.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="font-semibold text-lg mb-2">Innovation</h3>
+                    <p class="text-gray-600 text-sm">Achieve OS-level insight and control via a hardware-only pathway, enhancing security and reliability.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="technology" class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-4">Core Technology Breakdown</h2>
+            <p class="text-center text-gray-600 mb-10 max-w-2xl mx-auto">The project is built on three key technology pillars. Each component is critical for the chip's standalone functionality, from accessing the raw data on storage to processing it and displaying useful information. Click each pillar to learn more about its specific function and design challenges.</p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div id="tech-card-1" class="tech-card bg-white p-6 rounded-lg shadow-md cursor-pointer transition-all hover:shadow-xl hover:-translate-y-1">
+                    <h3 class="text-xl font-semibold mb-2">1. Direct Storage Interface</h3>
+                    <p class="text-gray-600">A dedicated hardware controller to communicate directly with various storage types (SATA, NVMe, eMMC) at a low level, bypassing the host CPU and OS drivers.</p>
+                    <div class="tech-details hidden mt-4 pt-4 border-t border-gray-200">
+                        <h4 class="font-semibold">Key Challenges:</h4>
+                        <ul class="list-disc list-inside text-sm text-gray-600 mt-2">
+                            <li>Protocol compatibility</li>
+                            <li>Filesystem parsing (NTFS, EXT4)</li>
+                            <li>Power management</li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="tech-card-2" class="tech-card bg-white p-6 rounded-lg shadow-md cursor-pointer transition-all hover:shadow-xl hover:-translate-y-1">
+                    <h3 class="text-xl font-semibold mb-2">2. On-Chip Micro-Kernel</h3>
+                    <p class="text-gray-600">A lightweight, custom real-time operating system (RTOS) running on the chip's own processing core to manage file parsing, data analysis, and the user interface.</p>
+                    <div class="tech-details hidden mt-4 pt-4 border-t border-gray-200">
+                        <h4 class="font-semibold">Design Goals:</h4>
+                        <ul class="list-disc list-inside text-sm text-gray-600 mt-2">
+                            <li>Minimal resource footprint</li>
+                            <li>Real-time responsiveness</li>
+                            <li>Secure execution environment</li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="tech-card-3" class="tech-card bg-white p-6 rounded-lg shadow-md cursor-pointer transition-all hover:shadow-xl hover:-translate-y-1">
+                    <h3 class="text-xl font-semibold mb-2">3. Minimal Display Controller</h3>
+                    <p class="text-gray-600">An integrated graphics controller designed to drive a simple, low-resolution display, presenting a text-based or basic GUI for system control and diagnostics.</p>
+                     <div class="tech-details hidden mt-4 pt-4 border-t border-gray-200">
+                        <h4 class="font-semibold">Output Capabilities:</h4>
+                        <ul class="list-disc list-inside text-sm text-gray-600 mt-2">
+                            <li>SPI/I2C display interfaces</li>
+                            <li>Basic framebuffer management</li>
+                            <li>Low-power text rendering</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="phases" class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-4">Research & Development Phases</h2>
+            <p class="text-center text-gray-600 mb-10 max-w-2xl mx-auto">The project is structured into four distinct phases, moving from initial exploration to a functional prototype. Click on each phase to see the specific objectives, key activities, and expected deliverables for that stage. This interactive timeline provides a clear roadmap for development.</p>
+            <div id="phase-container" class="space-y-4">
+            </div>
+        </section>
+
+        <section id="kpis" class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-4">Key Performance Indicators</h2>
+            <p class="text-center text-gray-600 mb-10 max-w-2xl mx-auto">Success will be measured against specific, quantifiable performance targets. The chart below visualizes our goals across different scenarios for the final prototype. Use the dropdown to see how our targets for performance, power, and cost adjust based on optimistic, realistic, or constrained development outcomes.</p>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="flex justify-end mb-4">
+                    <select id="kpi-scenario" class="bg-gray-100 border border-gray-300 rounded-md p-2 text-sm">
+                        <option value="realistic" selected>Realistic Target</option>
+                        <option value="optimistic">Optimistic Target</option>
+                        <option value="conservative">Conservative Target</option>
+                    </select>
+                </div>
+                <div class="chart-container">
+                    <canvas id="kpiChart"></canvas>
+                </div>
+            </div>
+        </section>
+        
+        <section id="management" class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-4">Project Management</h2>
+            <p class="text-center text-gray-600 mb-10 max-w-2xl mx-auto">This section outlines the financial and risk management aspects of the project. The budget allocation chart provides a transparent view of our planned expenditures, while the risk matrix identifies potential challenges and our strategies to mitigate them, ensuring project viability.</p>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4 text-center">Budget Allocation</h3>
+                    <div class="chart-container h-64 md:h-80">
+                        <canvas id="budgetChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md overflow-x-auto">
+                    <h3 class="text-xl font-semibold mb-4 text-center">Risk Analysis</h3>
+                    <table class="w-full text-sm text-left">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="p-2">Risk</th>
+                                <th class="p-2">Impact</th>
+                                <th class="p-2">Likelihood</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b">
+                                <td class="p-2 font-medium">Storage Protocol Incompatibility</td>
+                                <td class="p-2"><span class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs">High</span></td>
+                                <td class="p-2"><span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">Medium</span></td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-2 font-medium">Filesystem Parsing Complexity</td>
+                                <td class="p-2"><span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">Medium</span></td>
+                                <td class="p-2"><span class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs">High</span></td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-2 font-medium">Component Supply Chain Delays</td>
+                                <td class="p-2"><span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">Medium</span></td>
+                                <td class="p-2"><span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">Medium</span></td>
+                            </tr>
+                             <tr>
+                                <td class="p-2 font-medium">Power Consumption Exceeds Target</td>
+                                <td class="p-2"><span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">Low</span></td>
+                                <td class="p-2"><span class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs">High</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white mt-12">
+        <div class="container mx-auto px-6 py-4 text-center text-sm">
+            <p>&copy; 2025 ChipRead OS Project. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const phaseData = [
+                {
+                    title: "Phase 1: Feasibility & Architecture",
+                    duration: "3 Months",
+                    details: "This initial phase focuses on theoretical research and high-level design. We will evaluate the viability of different hardware approaches, define the core feature set, and create a detailed system architecture document.",
+                    deliverables: ["Feasibility Report", "System Architecture Document", "Component Selection List"]
+                },
+                {
+                    title: "Phase 2: Core Logic & Emulation",
+                    duration: "5 Months",
+                    details: "Development of the core logic in a hardware description language (e.g., Verilog). The design will be rigorously tested in an emulated environment to validate functionality before committing to physical hardware.",
+                    deliverables: ["Validated HDL Codebase", "Emulation Test Suite Results", "Initial Micro-Kernel Build"]
+                },
+                {
+                    title: "Phase 3: FPGA Prototyping",
+                    duration: "4 Months",
+                    details: "The emulated design will be synthesized and deployed to an FPGA development board. This allows for real-world testing of the storage interface and display controller with actual hardware components.",
+                    deliverables: ["Functional FPGA Prototype", "Hardware Interface Test Report", "Performance Benchmarks"]
+                },
+                {
+                    title: "Phase 4: ASIC Design & Tape-out",
+                    duration: "6 Months",
+                    details: "The final, validated design is translated into a physical layout for fabrication as an Application-Specific Integrated Circuit (ASIC). This phase involves final optimizations for power, size, and performance before sending the design for manufacturing (tape-out).",
+                    deliverables: ["Final GDSII Layout File", "Tape-out Readiness Report", "Initial ASIC Samples Plan"]
+                }
+            ];
+
+            const phaseContainer = document.getElementById('phase-container');
+            phaseData.forEach((phase, index) => {
+                const phaseElement = document.createElement('div');
+                phaseElement.innerHTML = `
+                    <div id="phase-card-${index}" class="phase-card bg-white p-6 rounded-lg shadow-md cursor-pointer border-2 border-transparent">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-xl font-semibold">${phase.title}</h3>
+                            <span class="text-sm font-medium text-gray-500">${phase.duration}</span>
+                        </div>
+                    </div>
+                    <div id="phase-details-${index}" class="phase-details bg-gray-50 rounded-b-lg px-6 py-4 -mt-2">
+                        <p class="text-gray-600 mb-4">${phase.details}</p>
+                        <h4 class="font-semibold mb-2">Key Deliverables:</h4>
+                        <ul class="list-disc list-inside text-gray-600 space-y-1">
+                            ${phase.deliverables.map(d => `<li>${d}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+                phaseContainer.appendChild(phaseElement);
+            });
+            
+            phaseContainer.addEventListener('click', (e) => {
+                const card = e.target.closest('.phase-card');
+                if (!card) return;
+
+                const index = card.id.split('-')[2];
+                const details = document.getElementById(`phase-details-${index}`);
+                const isActive = card.classList.contains('active');
+
+                document.querySelectorAll('.phase-card').forEach(c => c.classList.remove('active'));
+                document.querySelectorAll('.phase-details').forEach(d => d.style.maxHeight = '0px');
+
+                if (!isActive) {
+                    card.classList.add('active');
+                    details.style.maxHeight = details.scrollHeight + "px";
+                }
+            });
+
+
+            const kpiData = {
+                realistic: [150, 250, 15],
+                optimistic: [200, 180, 12],
+                conservative: [100, 350, 20]
+            };
+            const kpiLabels = ['Read Speed (MB/s)', 'Power (mW)', 'Unit Cost ($)'];
+            const kpiCtx = document.getElementById('kpiChart').getContext('2d');
+            const kpiChart = new Chart(kpiCtx, {
+                type: 'bar',
+                data: {
+                    labels: kpiLabels,
+                    datasets: [{
+                        label: 'Target Value',
+                        data: kpiData.realistic,
+                        backgroundColor: ['#60A5FA', '#3B82F6', '#1D4ED8'],
+                        borderColor: ['#3B82F6', '#2563EB', '#1E40AF'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.x !== null) {
+                                        let unit = '';
+                                        if (context.label.includes('Speed')) unit = ' MB/s';
+                                        if (context.label.includes('Power')) unit = ' mW';
+                                        if (context.label.includes('Cost')) unit = ' $';
+                                        label += context.parsed.x + unit;
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            document.getElementById('kpi-scenario').addEventListener('change', (e) => {
+                const scenario = e.target.value;
+                kpiChart.data.datasets[0].data = kpiData[scenario];
+                kpiChart.update();
+            });
+            
+            const budgetData = {
+                labels: ['R&D', 'Prototyping (FPGA)', 'ASIC Tape-out', 'Testing & QA', 'Personnel'],
+                datasets: [{
+                    data: [35, 25, 20, 10, 10],
+                    backgroundColor: ['#1D4ED8', '#2563EB', '#3B82F6', '#60A5FA', '#93C5FD'],
+                    hoverOffset: 4
+                }]
+            };
+            const budgetCtx = document.getElementById('budgetChart').getContext('2d');
+            new Chart(budgetCtx, {
+                type: 'doughnut',
+                data: budgetData,
+                 options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                             labels: {
+                                padding: 15,
+                                font: { size: 10 }
+                            }
+                        },
+                        tooltip: {
+                             callbacks: {
+                                label: function(context) {
+                                    return `${context.label}: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            const techCards = document.querySelectorAll('.tech-card');
+            techCards.forEach(card => {
+                card.addEventListener('click', () => {
+                   const details = card.querySelector('.tech-details');
+                   details.classList.toggle('hidden');
+                });
+            });
+
+            const mobileNav = document.getElementById('mobile-nav');
+            mobileNav.addEventListener('change', (e) => {
+                window.location.hash = e.target.value;
+            });
+        });
+    </script>
+</body>
 </html>
